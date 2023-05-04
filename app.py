@@ -52,4 +52,12 @@ def index():
     }
     return render_template('index.html', context=context)
 
+
+@app.route('/test-1', methods=["GET"])
+def test_function():
+    data = {
+        'message': 'New Test Message'
+    }
+    return jsonify(data)
+
 app.run(debug=True)
