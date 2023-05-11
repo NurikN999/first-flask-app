@@ -1,12 +1,49 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 import datetime
+from pydantic import BaseModel, EmailStr, validator
+import re
+
+
+class FormData(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    speciality: str
+
+    @validator('email')
+    def check_email(cls, value):
+        regex = "^\w+@\w+.\w{2,5}$"
+        if re.match(regex, value):
+            return value
+        else:
+            raise ValueError('email must be in format test@gmail.com')
 
 app = Flask(__name__)
 
 
-@app.route('/', methods=["GET"])
-def hello():
-    return 'Hello, World!'
+
+@app.route('/', methods=["GET", "POST"])
+def greeting():
+    if request.method == "GET":
+        return render_template('index.html')
+    elif request.method == "POST":
+        name = request.form["name"]
+        return render_template('greeting.html', name=name)
+
+
+@app.route('/register', methods=["POST"])
+def register():
+    data = {
+        'name': request.form.get('name'),
+        'email': request.form.get('email'),
+        'password': request.form.get('password'),
+        'speciality': request.form.get('speciality'),
+    }
+    form_data_validator = FormData(**data)
+    if form_data_validator:
+        return jsonify(data)
+
+
 
 
 @app.route('/api', methods=["GET"])

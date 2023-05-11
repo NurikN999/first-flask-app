@@ -1,12 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <p>{{context["name"]}} {{context["surname"]}}</p>
-    <p>Last login: {{context["date_of_login"]}}</p>
-    <p>Email: {{context["email"]}}</p>
-</body>
-</html>
+{% extends 'layout.html' %}
+
+{% block body %}
+    <form action="/register" method="POST">
+        <label for="name">Enter your name: </label>
+        <input autocomplete="off" autofocus name="name" placeholder="введите имя:" type="text" required>
+
+        <br>
+
+        <label for="email">Enter your email: </label>
+        <input autocomplete="off" name="email" placeholder="enter your email" type="email" required>
+
+        <br>
+
+        <label for="password">Enter your password: </label>
+        <input autocomplete="off" name="password" placeholder="enter password" type="password" required>
+
+        <br>
+
+        <select name="speciality" id="speciality">
+            <option disabled selected>Speciality</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Business School">Business School</option>
+            <option value="Data Science">Data Science</option>
+        </select>
+
+        <br>
+
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}
